@@ -24,47 +24,67 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background: var(--dark-bg);
             color: var(--text-light);
+            position: relative;
             overflow: hidden;
-            height: 100vh;
         }
 
         .slides-container {
             display: flex;
-            height: 100vh;
+            height: 100%;
+            width: 100%;
             transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             will-change: transform;
         }
 
         .slide {
-            min-width: 100vw;
-            height: 100vh;
-            padding: 80px;
+            flex: 0 0 100%;
+            width: 100%;
+            height: 100%;
+            padding: min(5vh, 40px) min(5vw, 80px);
             display: flex;
             flex-direction: column;
-            justify-content: center;
             position: relative;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
+            min-height: 0;
+        }
+
+        /* Ensure content fits within slides */
+        .slide > *:not(.logo) {
+            max-width: 100%;
+            overflow-wrap: break-word;
         }
 
         /* Slide Navigation */
         .nav-controls {
             position: fixed;
-            bottom: 40px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 1000;
             display: flex;
-            gap: 20px;
+            gap: 15px;
             align-items: center;
+            background: rgba(26, 26, 26, 0.9);
+            padding: 10px 20px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(239, 68, 68, 0.3);
         }
 
         .nav-button {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             border: 2px solid var(--primary-red);
             background: rgba(239, 68, 68, 0.1);
             border-radius: 50%;
@@ -73,7 +93,7 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            flex-shrink: 0;
         }
 
         .nav-button:hover {
@@ -82,39 +102,43 @@
         }
 
         .nav-button svg {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             stroke: var(--text-light);
             stroke-width: 3;
         }
 
         .slide-indicator {
             display: flex;
-            gap: 10px;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 200px;
         }
 
         .dot {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.3);
             cursor: pointer;
             transition: all 0.3s ease;
+            flex-shrink: 0;
         }
 
         .dot.active {
             background: var(--primary-red);
-            width: 30px;
+            width: 24px;
             border-radius: 6px;
         }
 
         /* Typography */
         h1 {
             font-family: 'Space Mono', monospace;
-            font-size: 5rem;
+            font-size: clamp(2.5rem, 5vw, 5rem);
             font-weight: 700;
             line-height: 1.1;
-            margin-bottom: 30px;
+            margin-bottom: clamp(20px, 3vh, 30px);
             background: linear-gradient(135deg, var(--primary-red), var(--accent-coral));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -123,23 +147,24 @@
 
         h2 {
             font-family: 'Space Mono', monospace;
-            font-size: 3.5rem;
+            font-size: clamp(2rem, 4vw, 3.5rem);
             font-weight: 700;
-            margin-bottom: 30px;
+            margin-bottom: clamp(20px, 3vh, 30px);
             color: var(--text-light);
             animation: fadeInUp 0.8s ease 0.1s both;
         }
 
         .subtitle {
-            font-size: 1.8rem;
+            font-size: clamp(1.2rem, 2vw, 1.8rem);
             color: var(--text-gray);
-            margin-bottom: 40px;
+            margin-bottom: clamp(20px, 3vh, 40px);
             font-weight: 300;
+            line-height: 1.4;
             animation: fadeInUp 0.8s ease 0.2s both;
         }
 
         .tagline {
-            font-size: 2rem;
+            font-size: clamp(1.3rem, 2vw, 2rem);
             color: var(--primary-red);
             font-weight: 600;
             margin-bottom: 20px;
@@ -149,18 +174,22 @@
         /* Content Blocks */
         .content-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 40px;
-            margin-top: 60px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: clamp(20px, 3vh, 40px);
+            margin-top: clamp(30px, 4vh, 60px);
+            width: 100%;
         }
 
         .content-card {
             background: var(--card-bg);
-            padding: 40px;
+            padding: clamp(25px, 3vw, 40px);
             border-radius: 20px;
             border: 1px solid rgba(239, 68, 68, 0.2);
             animation: fadeInUp 0.8s ease;
             transition: all 0.3s ease;
+            height: 100%;
+            min-height: 0;
+            overflow: hidden;
         }
 
         .content-card:hover {
@@ -170,34 +199,39 @@
         }
 
         .card-title {
-            font-size: 1.8rem;
+            font-size: clamp(1.3rem, 2vw, 1.8rem);
             font-weight: 700;
             color: var(--primary-red);
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             font-family: 'Space Mono', monospace;
+            line-height: 1.3;
         }
 
         .card-text {
-            font-size: 1.1rem;
-            line-height: 1.8;
+            font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+            line-height: 1.6;
             color: var(--text-gray);
         }
 
         /* List Styling */
         .problem-list, .feature-list {
             list-style: none;
-            margin-top: 40px;
+            margin-top: clamp(20px, 3vh, 40px);
+            width: 100%;
         }
 
         .problem-list li, .feature-list li {
-            font-size: 1.4rem;
-            padding: 20px;
-            margin-bottom: 15px;
+            font-size: clamp(1.1rem, 1.5vw, 1.4rem);
+            padding: clamp(15px, 2vh, 20px);
+            margin-bottom: 10px;
             background: var(--card-bg);
             border-left: 4px solid var(--primary-red);
             border-radius: 10px;
             animation: slideInLeft 0.6s ease;
             animation-fill-mode: both;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .problem-list li:nth-child(1) { animation-delay: 0.1s; }
@@ -208,54 +242,63 @@
         .feature-list li {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
         .feature-list li:before {
             content: "✓";
             background: var(--primary-red);
             color: white;
-            width: 30px;
-            height: 30px;
+            width: 28px;
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
             flex-shrink: 0;
             font-weight: bold;
+            font-size: 0.9em;
         }
 
         /* Chart Container */
         .chart-container {
             background: var(--card-bg);
-            padding: 40px;
+            padding: clamp(20px, 3vw, 40px);
             border-radius: 20px;
             border: 1px solid rgba(239, 68, 68, 0.2);
-            margin-top: 40px;
+            margin-top: clamp(20px, 3vh, 40px);
             animation: fadeInUp 0.8s ease 0.4s both;
+            width: 100%;
+            height: clamp(250px, 40vh, 400px);
+            min-height: 250px;
+            overflow: hidden;
         }
 
-        canvas {
-            max-height: 400px;
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+            max-height: 100% !important;
         }
 
         /* Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 30px;
-            margin-top: 60px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: clamp(15px, 2vw, 30px);
+            margin-top: clamp(30px, 4vh, 60px);
+            width: 100%;
         }
 
         .stat-card {
             background: var(--card-bg);
-            padding: 40px 30px;
+            padding: clamp(25px, 3vw, 40px) clamp(15px, 2vw, 30px);
             border-radius: 20px;
             border: 1px solid rgba(239, 68, 68, 0.2);
             text-align: center;
             animation: scaleIn 0.6s ease;
             animation-fill-mode: both;
             transition: all 0.3s ease;
+            min-width: 0;
         }
 
         .stat-card:nth-child(1) { animation-delay: 0.1s; }
@@ -270,34 +313,38 @@
         }
 
         .stat-number {
-            font-size: 3.5rem;
+            font-size: clamp(2rem, 4vw, 3.5rem);
             font-weight: 900;
             color: var(--primary-red);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-family: 'Space Mono', monospace;
+            line-height: 1.2;
         }
 
         .stat-label {
-            font-size: 1.1rem;
+            font-size: clamp(0.9rem, 1.5vw, 1.1rem);
             color: var(--text-gray);
             font-weight: 500;
+            line-height: 1.3;
         }
 
         /* CTA Button */
         .cta-button {
             display: inline-block;
-            padding: 20px 50px;
+            padding: clamp(15px, 2vh, 20px) clamp(30px, 4vw, 50px);
             background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
             color: white;
-            font-size: 1.4rem;
+            font-size: clamp(1.1rem, 1.5vw, 1.4rem);
             font-weight: 700;
             border-radius: 50px;
             text-decoration: none;
-            margin-top: 40px;
+            margin-top: clamp(20px, 3vh, 40px);
             transition: all 0.3s ease;
             animation: fadeInUp 0.8s ease 0.5s both;
             border: none;
             cursor: pointer;
+            text-align: center;
+            white-space: nowrap;
         }
 
         .cta-button:hover {
@@ -307,17 +354,20 @@
 
         /* Comparison Table */
         .comparison-table {
-            margin-top: 60px;
+            margin-top: clamp(30px, 4vh, 60px);
             animation: fadeInUp 0.8s ease 0.3s both;
+            width: 100%;
+            overflow-x: auto;
         }
 
         .comparison-row {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 20px;
-            padding: 25px;
+            grid-template-columns: minmax(200px, 2fr) minmax(100px, 1fr) minmax(100px, 1fr);
+            gap: clamp(10px, 2vw, 20px);
+            padding: clamp(15px, 2vh, 25px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             align-items: center;
+            min-width: 600px;
         }
 
         .comparison-row:first-child {
@@ -331,16 +381,17 @@
             background: rgba(239, 68, 68, 0.05);
         }
 
+        .check-icon, .cross-icon {
+            font-size: clamp(1.3rem, 2vw, 1.8rem);
+            text-align: center;
+        }
+
         .check-icon {
             color: var(--primary-red);
-            font-size: 1.8rem;
-            text-align: center;
         }
 
         .cross-icon {
             color: var(--text-gray);
-            font-size: 1.8rem;
-            text-align: center;
             opacity: 0.4;
         }
 
@@ -350,10 +401,12 @@
             position: absolute;
             top: -50%;
             right: -50%;
-            width: 100%;
-            height: 100%;
+            width: 200%;
+            height: 200%;
             background: radial-gradient(circle, rgba(239, 68, 68, 0.1) 0%, transparent 70%);
             animation: float 20s ease-in-out infinite;
+            z-index: -1;
+            pointer-events: none;
         }
 
         /* Animations */
@@ -399,22 +452,60 @@
         /* Logo placeholder */
         .logo {
             position: absolute;
-            top: 40px;
-            left: 80px;
-            font-size: 1.5rem;
+            top: clamp(20px, 3vh, 40px);
+            left: clamp(20px, 3vw, 80px);
+            font-size: clamp(1.2rem, 2vw, 1.5rem);
             font-weight: 700;
             color: var(--primary-red);
             font-family: 'Space Mono', monospace;
             z-index: 100;
+            white-space: nowrap;
         }
 
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .slide { padding: 60px 40px; }
-            h1 { font-size: 3.5rem; }
-            h2 { font-size: 2.5rem; }
-            .content-grid { grid-template-columns: 1fr; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        /* Slide content wrapper for better control */
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        /* Utility classes */
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-auto {
+            margin-top: auto;
+        }
+
+        /* Ensure scrolling works properly on mobile */
+        @media (max-height: 700px) {
+            .slide {
+                padding-top: 60px;
+                padding-bottom: 100px;
+            }
+            
+            .nav-controls {
+                bottom: 10px;
+            }
+        }
+
+        /* Touch improvements */
+        @media (hover: none) {
+            .content-card:hover,
+            .stat-card:hover {
+                transform: none;
+                border-color: rgba(239, 68, 68, 0.2);
+            }
+            
+            .cta-button:hover {
+                transform: none;
+            }
         }
     </style>
 </head>
@@ -424,294 +515,320 @@
     <div class="slides-container" id="slidesContainer">
         <!-- Slide 1: Hero -->
         <div class="slide">
-            <h1>Visible Analytics</h1>
-            <p class="subtitle">Turn POS data into decisions.<br>Without hiring a data team.</p>
-            <p class="tagline">Retail, Food & Beverage analytics built for real operators</p>
-            <div style="margin-top: 40px;">
-                <p style="font-size: 1.3rem; color: var(--text-gray);">
-                    <strong style="color: var(--text-light);">Kelvin Karanja</strong> – Founder<br>
-                    📍 Nairobi, Kenya
-                </p>
+            <div class="slide-content">
+                <h1>Visible Analytics</h1>
+                <p class="subtitle">Turn POS data into decisions.<br>Without hiring a data team.</p>
+                <p class="tagline">Retail, Food & Beverage analytics built for real operators</p>
+                <div style="margin-top: 30px;">
+                    <p style="font-size: clamp(1rem, 1.5vw, 1.3rem); color: var(--text-gray);">
+                        <strong style="color: var(--text-light);">Kelvin Karanja</strong> – Founder<br>
+                        📍 Nairobi, Kenya
+                    </p>
+                </div>
             </div>
         </div>
 
         <!-- Slide 2: The Problem -->
         <div class="slide">
-            <h2>The Problem</h2>
-            <p class="subtitle">Retailers already have data. But they still don't have answers.</p>
-            <ul class="problem-list">
-                <li>🗄️ POS data sits in silos</li>
-                <li>⏰ Reports come too late</li>
-                <li>🎯 Decisions are made on instinct</li>
-                <li>👁️ Head office sees numbers — not behavior</li>
-            </ul>
+            <div class="slide-content">
+                <h2>The Problem</h2>
+                <p class="subtitle">Retailers already have data. But they still don't have answers.</p>
+                <ul class="problem-list">
+                    <li>🗄️ POS data sits in silos</li>
+                    <li>⏰ Reports come too late</li>
+                    <li>🎯 Decisions are made on instinct</li>
+                    <li>👁️ Head office sees numbers — not behavior</li>
+                </ul>
+            </div>
         </div>
 
         <!-- Slide 3: Pain Points -->
         <div class="slide">
-            <h2>This Looks Familiar</h2>
-            <div class="content-grid">
-                <div class="content-card">
-                    <div class="card-title">Which store is quietly bleeding revenue?</div>
-                    <div class="card-text">Small drops add up. By the time you notice, it's already cost you.</div>
+            <div class="slide-content">
+                <h2>This Looks Familiar</h2>
+                <div class="content-grid">
+                    <div class="content-card">
+                        <div class="card-title">Which store is quietly bleeding revenue?</div>
+                        <div class="card-text">Small drops add up. By the time you notice, it's already cost you.</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-title">Which category is growing — and why?</div>
+                        <div class="card-text">You need to double down. But on what, exactly?</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-title">Why did sales drop yesterday?</div>
+                        <div class="card-text">Staff shortage? Stock-out? Competitor promo? You're guessing.</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-title">Are promotions actually working?</div>
+                        <div class="card-text">Revenue up, but margin down. Was it worth it?</div>
+                    </div>
                 </div>
-                <div class="content-card">
-                    <div class="card-title">Which category is growing — and why?</div>
-                    <div class="card-text">You need to double down. But on what, exactly?</div>
-                </div>
-                <div class="content-card">
-                    <div class="card-title">Why did sales drop yesterday?</div>
-                    <div class="card-text">Staff shortage? Stock-out? Competitor promo? You're guessing.</div>
-                </div>
-                <div class="content-card">
-                    <div class="card-title">Are promotions actually working?</div>
-                    <div class="card-text">Revenue up, but margin down. Was it worth it?</div>
-                </div>
+                <p class="tagline text-center" style="margin-top: 40px;">Most teams find out after the damage.</p>
             </div>
-            <p class="tagline" style="margin-top: 60px; text-align: center;">Most teams find out after the damage.</p>
         </div>
 
         <!-- Slide 4: Hidden Cost with Chart -->
         <div class="slide">
-            <h2>The Hidden Cost</h2>
-            <p class="subtitle">Small blind spots → Big losses</p>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number">15%</div>
-                    <div class="stat-label">Stock misallocation</div>
+            <div class="slide-content">
+                <h2>The Hidden Cost</h2>
+                <p class="subtitle">Small blind spots → Big losses</p>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">15%</div>
+                        <div class="stat-label">Stock misallocation</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">20%</div>
+                        <div class="stat-label">Poor promo ROI</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">48hrs</div>
+                        <div class="stat-label">Delayed reactions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">30%</div>
+                        <div class="stat-label">HQ disconnect</div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number">20%</div>
-                    <div class="stat-label">Poor promo ROI</div>
+                <div class="chart-container">
+                    <canvas id="costChart"></canvas>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number">48hrs</div>
-                    <div class="stat-label">Delayed reactions</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">30%</div>
-                    <div class="stat-label">HQ disconnect</div>
-                </div>
-            </div>
-            <div class="chart-container">
-                <canvas id="costChart"></canvas>
             </div>
         </div>
 
         <!-- Slide 5: Solution -->
         <div class="slide">
-            <h2>What Visible Analytics Does</h2>
-            <p class="subtitle">Connect → Clean → Visualize → Act</p>
-            <ul class="feature-list">
-                <li>Pulls data from your POS</li>
-                <li>Standardizes it across stores</li>
-                <li>Shows live performance dashboards</li>
-                <li>Flags what needs attention</li>
-            </ul>
-            <div class="chart-container">
-                <canvas id="revenueChart"></canvas>
+            <div class="slide-content">
+                <h2>What Visible Analytics Does</h2>
+                <p class="subtitle">Connect → Clean → Visualize → Act</p>
+                <ul class="feature-list">
+                    <li>Pulls data from your POS</li>
+                    <li>Standardizes it across stores</li>
+                    <li>Shows live performance dashboards</li>
+                    <li>Flags what needs attention</li>
+                </ul>
+                <div class="chart-container">
+                    <canvas id="revenueChart"></canvas>
+                </div>
             </div>
         </div>
 
         <!-- Slide 6: Key Features -->
         <div class="slide">
-            <h2>What You'll See</h2>
-            <div class="content-grid">
-                <div class="content-card">
-                    <div class="card-title">📊 Daily Revenue</div>
-                    <div class="card-text">Store-by-store performance. Real-time updates. No more waiting for EOD reports.</div>
-                </div>
-                <div class="content-card">
-                    <div class="card-title">📈 Category Trends</div>
-                    <div class="card-text">See what's moving. Product performance. Category mix shifts.</div>
-                </div>
-                <div class="content-card">
-                    <div class="card-title">⏰ Peak Hours</div>
-                    <div class="card-text">Traffic patterns. Staffing optimization. Inventory timing.</div>
-                </div>
-                <div class="content-card">
-                    <div class="card-title">🔄 Store Comparisons</div>
-                    <div class="card-text">Benchmarking. Best practices. Identify outliers fast.</div>
+            <div class="slide-content">
+                <h2>What You'll See</h2>
+                <div class="content-grid">
+                    <div class="content-card">
+                        <div class="card-title">📊 Daily Revenue</div>
+                        <div class="card-text">Store-by-store performance. Real-time updates. No more waiting for EOD reports.</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-title">📈 Category Trends</div>
+                        <div class="card-text">See what's moving. Product performance. Category mix shifts.</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-title">⏰ Peak Hours</div>
+                        <div class="card-text">Traffic patterns. Staffing optimization. Inventory timing.</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-title">🔄 Store Comparisons</div>
+                        <div class="card-text">Benchmarking. Best practices. Identify outliers fast.</div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Slide 7: Use Cases with Chart -->
         <div class="slide">
-            <h2>Real Use Cases</h2>
-            <div class="content-grid">
-                <div class="content-card">
-                    <div class="card-title">🏪 Retail</div>
-                    <div class="card-text">
-                        • Identify underperforming branches early<br>
-                        • Optimize category placement<br>
-                        • Track promotion lift
+            <div class="slide-content">
+                <h2>Real Use Cases</h2>
+                <div class="content-grid">
+                    <div class="content-card">
+                        <div class="card-title">🏪 Retail</div>
+                        <div class="card-text">
+                            • Identify underperforming branches early<br>
+                            • Optimize category placement<br>
+                            • Track promotion lift
+                        </div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-title">🍔 Fast Food / QSR</div>
+                        <div class="card-text">
+                            • Peak-hour optimization<br>
+                            • Menu performance analysis<br>
+                            • Demand forecasting
+                        </div>
                     </div>
                 </div>
-                <div class="content-card">
-                    <div class="card-title">🍔 Fast Food / QSR</div>
-                    <div class="card-text">
-                        • Peak-hour optimization<br>
-                        • Menu performance analysis<br>
-                        • Demand forecasting
-                    </div>
+                <div class="chart-container">
+                    <canvas id="useCaseChart"></canvas>
                 </div>
-            </div>
-            <div class="chart-container">
-                <canvas id="useCaseChart"></canvas>
             </div>
         </div>
 
         <!-- Slide 8: Comparison Table -->
         <div class="slide">
-            <h2>Why We're Different</h2>
-            <div class="comparison-table">
-                <div class="comparison-row">
-                    <div>Feature</div>
-                    <div style="text-align: center;">Traditional Reports</div>
-                    <div style="text-align: center;">Visible Analytics</div>
-                </div>
-                <div class="comparison-row">
-                    <div>Real-time data</div>
-                    <div class="cross-icon">✗</div>
-                    <div class="check-icon">✓</div>
-                </div>
-                <div class="comparison-row">
-                    <div>Multi-store view</div>
-                    <div class="cross-icon">✗</div>
-                    <div class="check-icon">✓</div>
-                </div>
-                <div class="comparison-row">
-                    <div>Automated alerts</div>
-                    <div class="cross-icon">✗</div>
-                    <div class="check-icon">✓</div>
-                </div>
-                <div class="comparison-row">
-                    <div>Works with messy data</div>
-                    <div class="cross-icon">✗</div>
-                    <div class="check-icon">✓</div>
-                </div>
-                <div class="comparison-row">
-                    <div>Setup time</div>
-                    <div style="text-align: center; color: var(--text-gray);">Months</div>
-                    <div style="text-align: center; color: var(--primary-red); font-weight: 700;">Days</div>
-                </div>
-                <div class="comparison-row">
-                    <div>Data team required</div>
-                    <div class="check-icon">✓</div>
-                    <div class="cross-icon">✗</div>
+            <div class="slide-content">
+                <h2>Why We're Different</h2>
+                <div class="comparison-table">
+                    <div class="comparison-row">
+                        <div>Feature</div>
+                        <div class="text-center">Traditional Reports</div>
+                        <div class="text-center">Visible Analytics</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div>Real-time data</div>
+                        <div class="cross-icon">✗</div>
+                        <div class="check-icon">✓</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div>Multi-store view</div>
+                        <div class="cross-icon">✗</div>
+                        <div class="check-icon">✓</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div>Automated alerts</div>
+                        <div class="cross-icon">✗</div>
+                        <div class="check-icon">✓</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div>Works with messy data</div>
+                        <div class="cross-icon">✗</div>
+                        <div class="check-icon">✓</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div>Setup time</div>
+                        <div class="text-center" style="color: var(--text-gray);">Months</div>
+                        <div class="text-center" style="color: var(--primary-red); font-weight: 700;">Days</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div>Data team required</div>
+                        <div class="check-icon">✓</div>
+                        <div class="cross-icon">✗</div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Slide 9: Deployment -->
         <div class="slide">
-            <h2>How It's Deployed</h2>
-            <p class="subtitle">No disruption to stores</p>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number">1</div>
-                    <div class="stat-label">Connect POS</div>
+            <div class="slide-content">
+                <h2>How It's Deployed</h2>
+                <p class="subtitle">No disruption to stores</p>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">1</div>
+                        <div class="stat-label">Connect POS</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">2</div>
+                        <div class="stat-label">Validate Data</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">3</div>
+                        <div class="stat-label">Go Live</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">Days</div>
+                        <div class="stat-label">Not Months</div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number">2</div>
-                    <div class="stat-label">Validate Data</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">3</div>
-                    <div class="stat-label">Go Live</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">Days</div>
-                    <div class="stat-label">Not Months</div>
-                </div>
+                <ul class="feature-list" style="margin-top: 40px;">
+                    <li>🔒 Read-only access</li>
+                    <li>👥 Role-based dashboards</li>
+                    <li>🏢 Organization-level isolation</li>
+                    <li>🔑 Secure API keys</li>
+                </ul>
             </div>
-            <ul class="feature-list" style="margin-top: 60px;">
-                <li>🔒 Read-only access</li>
-                <li>👥 Role-based dashboards</li>
-                <li>🏢 Organization-level isolation</li>
-                <li>🔑 Secure API keys</li>
-            </ul>
         </div>
 
         <!-- Slide 10: Pricing -->
         <div class="slide">
-            <h2>Pricing Model</h2>
-            <div class="content-grid">
-                <div class="content-card">
-                    <div class="card-title">Per Organization</div>
-                    <div class="card-text">One subscription. All your stores.</div>
-                </div>
-                <div class="content-card">
-                    <div class="card-title">Scales by Need</div>
-                    <div class="card-text">Store count & features. Pay for what you use.</div>
-                </div>
-                <div class="content-card">
-                    <div class="card-title">Free Trial</div>
-                    <div class="card-text">14 days. No credit card. Full features.</div>
-                </div>
-                <div class="content-card">
-                    <div class="card-title">Local Support</div>
-                    <div class="card-text">Nairobi-based team. We understand your market.</div>
+            <div class="slide-content">
+                <h2>Pricing Model</h2>
+                <div class="content-grid">
+                    <div class="content-card">
+                        <div class="card-title">Per Organization</div>
+                        <div class="card-text">One subscription. All your stores.</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-title">Scales by Need</div>
+                        <div class="card-text">Store count & features. Pay for what you use.</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-title">Free Trial</div>
+                        <div class="card-text">14 days. No credit card. Full features.</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-title">Local Support</div>
+                        <div class="card-text">Nairobi-based team. We understand your market.</div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Slide 11: Why This Matters -->
         <div class="slide">
-            <h2>Why This Matters for You</h2>
-            <p class="subtitle">Visibility pays off where it matters most</p>
-            <ul class="feature-list">
-                <li>Multi-branch complexity</li>
-                <li>Daily operational decisions</li>
-                <li>Thin margins — every percentage counts</li>
-                <li>High data volume</li>
-            </ul>
-            <div class="chart-container">
-                <canvas id="impactChart"></canvas>
+            <div class="slide-content">
+                <h2>Why This Matters for You</h2>
+                <p class="subtitle">Visibility pays off where it matters most</p>
+                <ul class="feature-list">
+                    <li>Multi-branch complexity</li>
+                    <li>Daily operational decisions</li>
+                    <li>Thin margins — every percentage counts</li>
+                    <li>High data volume</li>
+                </ul>
+                <div class="chart-container">
+                    <canvas id="impactChart"></canvas>
+                </div>
             </div>
         </div>
 
         <!-- Slide 12: Next Step -->
         <div class="slide">
-            <h2>Proposed Next Step</h2>
-            <p class="subtitle">Free Trial with Selected Stores</p>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number">14</div>
-                    <div class="stat-label">Days Free</div>
+            <div class="slide-content">
+                <h2>Proposed Next Step</h2>
+                <p class="subtitle">Free Trial with Selected Stores</p>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">14</div>
+                        <div class="stat-label">Days Free</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">Clear</div>
+                        <div class="stat-label">KPIs</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">No</div>
+                        <div class="stat-label">Lock-in</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">Full</div>
+                        <div class="stat-label">Support</div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number">Clear</div>
-                    <div class="stat-label">KPIs</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">No</div>
-                    <div class="stat-label">Lock-in</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">Full</div>
-                    <div class="stat-label">Support</div>
-                </div>
+                <button class="cta-button" onclick="window.location.href='mailto:sales@visibleanalytics.co.ke'">
+                    Let's Get Started →
+                </button>
             </div>
-            <button class="cta-button" onclick="window.location.href='mailto:kelvin@visibleanalytics.co.ke'">
-                Let's Get Started →
-            </button>
         </div>
 
         <!-- Slide 13: Vision -->
         <div class="slide">
-            <h2>Our Vision</h2>
-            <p class="subtitle" style="font-size: 2.5rem; line-height: 1.4; margin-top: 80px;">
-                To become the <span style="color: var(--primary-red); font-weight: 700;">decision layer</span><br>
-                for African retail businesses.
-            </p>
-            <div style="margin-top: 100px; text-align: center;">
-                <p style="font-size: 1.5rem; color: var(--text-gray); margin-bottom: 20px;">Contact</p>
-                <p style="font-size: 1.3rem; color: var(--text-light);">
-                    kelvin@visibleanalytics.co.ke<br>
-                    www.visibleanalytics.co.ke
+            <div class="slide-content">
+                <h2>Our Vision</h2>
+                <p class="subtitle" style="font-size: clamp(1.5rem, 3vw, 2.5rem); line-height: 1.4; margin-top: 40px;">
+                    To become the <span style="color: var(--primary-red); font-weight: 700;">decision layer</span><br>
+                    for African retail businesses.
                 </p>
+                <div style="margin-top: 60px; text-align: center;" class="mt-auto">
+                    <p style="font-size: clamp(1.1rem, 1.5vw, 1.5rem); color: var(--text-gray); margin-bottom: 20px;">Contact</p>
+                    <p style="font-size: clamp(1rem, 1.5vw, 1.3rem); color: var(--text-light);">
+                        kelvin@visibleanalytics.co.ke<br>
+                        www.visibleanalytics.co.ke
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -749,6 +866,13 @@
             document.querySelectorAll('.dot').forEach((dot, index) => {
                 dot.classList.toggle('active', index === currentSlide);
             });
+            
+            // Reset animations on slide change
+            slides.forEach(slide => {
+                slide.style.animation = 'none';
+                slide.offsetHeight; // Trigger reflow
+                slide.style.animation = null;
+            });
         }
 
         function nextSlide() {
@@ -770,168 +894,221 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowRight') nextSlide();
             if (e.key === 'ArrowLeft') previousSlide();
+            if (e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            }
         });
 
-        // Chart 1: Cost Impact
-        const costCtx = document.getElementById('costChart').getContext('2d');
-        new Chart(costCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Stock Issues', 'Poor Promos', 'Delayed Response', 'HQ Gap'],
-                datasets: [{
-                    label: 'Monthly Loss (KSh 000s)',
-                    data: [450, 680, 320, 550],
-                    backgroundColor: 'rgba(239, 68, 68, 0.8)',
-                    borderColor: '#EF4444',
-                    borderWidth: 2,
-                    borderRadius: 10
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: 'Average Monthly Revenue Loss',
-                        color: '#F5F5F5',
-                        font: { size: 18, weight: 'bold' }
-                    }
+        // Touch/swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        slidesContainer.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        slidesContainer.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            const threshold = 50;
+            
+            if (touchStartX - touchEndX > threshold) {
+                // Swipe left
+                nextSlide();
+            } else if (touchEndX - touchStartX > threshold) {
+                // Swipe right
+                previousSlide();
+            }
+        });
+
+        // Initialize charts
+        function initCharts() {
+            // Chart 1: Cost Impact
+            const costCtx = document.getElementById('costChart').getContext('2d');
+            new Chart(costCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Stock Issues', 'Poor Promos', 'Delayed Response', 'HQ Gap'],
+                    datasets: [{
+                        label: 'Monthly Loss (KSh 000s)',
+                        data: [450, 680, 320, 550],
+                        backgroundColor: 'rgba(239, 68, 68, 0.8)',
+                        borderColor: '#EF4444',
+                        borderWidth: 2,
+                        borderRadius: 10
+                    }]
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: { color: '#A3A3A3' },
-                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        title: {
+                            display: true,
+                            text: 'Average Monthly Revenue Loss',
+                            color: '#F5F5F5',
+                            font: { size: 16, weight: 'bold' }
+                        }
                     },
-                    x: {
-                        ticks: { color: '#A3A3A3' },
-                        grid: { display: false }
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: '#A3A3A3' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        x: {
+                            ticks: { color: '#A3A3A3' },
+                            grid: { display: false }
+                        }
                     }
                 }
-            }
-        });
+            });
 
-        // Chart 2: Revenue Trend
-        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-        new Chart(revenueCtx, {
-            type: 'line',
-            data: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                datasets: [{
-                    label: 'Store A',
-                    data: [850, 920, 880, 950, 1100, 1300, 1050],
-                    borderColor: '#EF4444',
-                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                }, {
-                    label: 'Store B',
-                    data: [780, 800, 820, 880, 950, 1150, 920],
-                    borderColor: '#FB7185',
-                    backgroundColor: 'rgba(251, 113, 133, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: {
-                        display: true,
-                        labels: { color: '#F5F5F5', font: { size: 14 } }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Weekly Revenue Comparison (KSh 000s)',
-                        color: '#F5F5F5',
-                        font: { size: 18, weight: 'bold' }
-                    }
+            // Chart 2: Revenue Trend
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            new Chart(revenueCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Store A',
+                        data: [850, 920, 880, 950, 1100, 1300, 1050],
+                        borderColor: '#EF4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }, {
+                        label: 'Store B',
+                        data: [780, 800, 820, 880, 950, 1150, 920],
+                        borderColor: '#FB7185',
+                        backgroundColor: 'rgba(251, 113, 133, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: { color: '#A3A3A3' },
-                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: { color: '#F5F5F5', font: { size: 14 } }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Weekly Revenue Comparison (KSh 000s)',
+                            color: '#F5F5F5',
+                            font: { size: 16, weight: 'bold' }
+                        }
                     },
-                    x: {
-                        ticks: { color: '#A3A3A3' },
-                        grid: { display: false }
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: '#A3A3A3' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        x: {
+                            ticks: { color: '#A3A3A3' },
+                            grid: { display: false }
+                        }
                     }
                 }
-            }
-        });
+            });
 
-        // Chart 3: Use Cases
-        const useCaseCtx = document.getElementById('useCaseChart').getContext('2d');
-        new Chart(useCaseCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Retail Chains', 'QSR/Fast Food', 'Supermarkets', 'Cafes & Restaurants'],
-                datasets: [{
-                    data: [40, 30, 20, 10],
-                    backgroundColor: ['#EF4444', '#FB7185', '#FCA5A5', '#FECACA'],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'right',
-                        labels: { color: '#F5F5F5', font: { size: 14 }, padding: 15 }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Target Market Distribution',
-                        color: '#F5F5F5',
-                        font: { size: 18, weight: 'bold' }
-                    }
-                }
-            }
-        });
-
-        // Chart 4: Impact
-        const impactCtx = document.getElementById('impactChart').getContext('2d');
-        new Chart(impactCtx, {
-            type: 'radar',
-            data: {
-                labels: ['Speed', 'Accuracy', 'Cost', 'Ease of Use', 'Insights'],
-                datasets: [{
-                    label: 'Traditional Reports',
-                    data: [3, 6, 4, 5, 4],
-                    borderColor: '#A3A3A3',
-                    backgroundColor: 'rgba(163, 163, 163, 0.2)'
-                }, {
-                    label: 'Visible Analytics',
-                    data: [9, 9, 8, 9, 10],
-                    borderColor: '#EF4444',
-                    backgroundColor: 'rgba(239, 68, 68, 0.2)'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: {
-                        display: true,
-                        labels: { color: '#F5F5F5', font: { size: 14 } }
-                    }
+            // Chart 3: Use Cases
+            const useCaseCtx = document.getElementById('useCaseChart').getContext('2d');
+            new Chart(useCaseCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Retail Chains', 'QSR/Fast Food', 'Supermarkets', 'Cafes & Restaurants'],
+                    datasets: [{
+                        data: [40, 30, 20, 10],
+                        backgroundColor: ['#EF4444', '#FB7185', '#FCA5A5', '#FECACA'],
+                        borderWidth: 0
+                    }]
                 },
-                scales: {
-                    r: {
-                        beginAtZero: true,
-                        max: 10,
-                        ticks: { color: '#A3A3A3', backdropColor: 'transparent' },
-                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                        pointLabels: { color: '#F5F5F5', font: { size: 14 } }
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'right',
+                            labels: { 
+                                color: '#F5F5F5', 
+                                font: { size: 12 },
+                                padding: 10
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Target Market Distribution',
+                            color: '#F5F5F5',
+                            font: { size: 16, weight: 'bold' }
+                        }
                     }
                 }
-            }
+            });
+
+            // Chart 4: Impact
+            const impactCtx = document.getElementById('impactChart').getContext('2d');
+            new Chart(impactCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Speed', 'Accuracy', 'Cost', 'Ease of Use', 'Insights'],
+                    datasets: [{
+                        label: 'Traditional Reports',
+                        data: [3, 6, 4, 5, 4],
+                        borderColor: '#A3A3A3',
+                        backgroundColor: 'rgba(163, 163, 163, 0.2)',
+                        borderWidth: 2
+                    }, {
+                        label: 'Visible Analytics',
+                        data: [9, 9, 8, 9, 10],
+                        borderColor: '#EF4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: { color: '#F5F5F5', font: { size: 12 } }
+                        }
+                    },
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 10,
+                            ticks: { 
+                                color: '#A3A3A3', 
+                                backdropColor: 'transparent',
+                                stepSize: 2
+                            },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            pointLabels: { 
+                                color: '#F5F5F5', 
+                                font: { size: 12 }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize charts when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initCharts);
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            // Reinitialize charts to ensure proper sizing
+            document.querySelectorAll('canvas').forEach(canvas => {
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+            });
         });
     </script>
 </body>
