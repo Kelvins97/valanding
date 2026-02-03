@@ -6,6 +6,7 @@
 <title>Visible Analytics | Retail Analytics</title>
 <link rel="icon" type="image/png" href="images/logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 * {
@@ -95,6 +96,29 @@ header {
   color: #333;
 }
 
+.header-cta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  animation: fadeInRight 0.6s ease 0.3s backwards;
+}
+
+.demo-btn {
+  padding: 10px 20px;
+  border-radius: 25px;
+  background: linear-gradient(135deg, #8b0000, #cc0000);
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(139,0,0,0.2);
+}
+
+.demo-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139,0,0,0.4);
+}
+
 .login-btn {
   padding: 10px 20px;
   border-radius: 25px;
@@ -103,7 +127,6 @@ header {
   color: #8b0000;
   font-weight: 600;
   transition: all 0.3s ease;
-  animation: fadeInRight 0.6s ease 0.3s backwards;
 }
 
 .login-btn:hover {
@@ -235,7 +258,7 @@ header {
 
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 30px;
   margin-top: 40px;
 }
@@ -272,6 +295,24 @@ header {
   border-color: #8b0000;
 }
 
+.feature-icon {
+  width: 100%;
+  height: 180px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  background: #f8f8f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.feature-icon canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
 .feature-card h3 {
   font-size: 22px;
   margin: 15px 0;
@@ -280,6 +321,64 @@ header {
 .feature-card p {
   color: #666;
   line-height: 1.6;
+}
+
+.demo-showcase {
+  background: linear-gradient(135deg, #f5f5f5, #ffffff);
+  padding: 80px 10%;
+  margin: 60px 0;
+}
+
+.demo-showcase h2 {
+  text-align: center;
+  font-size: clamp(28px, 4vw, 36px);
+  margin-bottom: 20px;
+}
+
+.demo-showcase p {
+  text-align: center;
+  color: #666;
+  font-size: 18px;
+  margin-bottom: 40px;
+}
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.demo-card {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.demo-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+}
+
+.demo-card h3 {
+  font-size: 48px;
+  color: #8b0000;
+  margin: 10px 0;
+  font-weight: 800;
+}
+
+.demo-card p {
+  color: #666;
+  font-size: 16px;
+  margin: 0;
+}
+
+.demo-cta-center {
+  text-align: center;
+  margin-top: 40px;
 }
 
 .pricing-grid {
@@ -502,6 +601,10 @@ footer {
     padding: 60px 5%;
   }
   
+  .demo-showcase {
+    padding: 60px 5%;
+  }
+  
   .contact-box {
     padding: 40px 30px;
   }
@@ -534,6 +637,16 @@ footer {
     border-bottom: 1px solid #f0f0f0;
   }
   
+  .header-cta {
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .demo-btn, .login-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+  
   .hero h1 {
     font-size: 28px;
   }
@@ -548,7 +661,8 @@ footer {
   }
   
   .features-grid,
-  .pricing-grid {
+  .pricing-grid,
+  .demo-grid {
     grid-template-columns: 1fr;
   }
   
@@ -580,7 +694,10 @@ footer {
     <a href="#contact">Contact</a>
   </nav>
 
-  <a href="https://app.visibleanalytics.co.ke/login" class="login-btn">Login</a>
+  <div class="header-cta">
+    <a href="https://app.visibleanalytics.co.ke/demo" class="demo-btn">View Demo</a>
+    <a href="https://app.visibleanalytics.co.ke/login" class="login-btn">Login</a>
+  </div>
 </header>
 
 <section class="hero" id="home">
@@ -589,8 +706,8 @@ footer {
     <p>Live heatmaps, traffic analytics, basket insights & AI predictions for supermarkets and retail chains — all in one powerful dashboard.</p>
 
     <div class="cta-group">
-      <a href="https://app.visibleanalytics.co.ke/request-acess/" class="btn-main">Get Started</a>
-      <a href="#pricing" class="btn-sec">View Pricing</a>
+      <a href="https://app.visibleanalytics.co.ke/request-access/" class="btn-main">Get Started</a>
+      <a href="https://app.visibleanalytics.co.ke/demo" class="btn-sec">View Demo</a>
     </div>
   </div>
 
@@ -599,21 +716,59 @@ footer {
   </div>
 </section>
 
+<section class="demo-showcase">
+  <h2>See It In Action</h2>
+  <p>Real-time insights from aggregated retail data</p>
+  
+  <div class="demo-grid">
+    <div class="demo-card">
+      <p>Total Transactions</p>
+      <h3>3,420</h3>
+      <p style="color: #4caf50; font-weight: 600;">↑ 12.5% this week</p>
+    </div>
+    <div class="demo-card">
+      <p>Active Stores</p>
+      <h3>12</h3>
+      <p style="color: #2196f3; font-weight: 600;">Multi-branch tracking</p>
+    </div>
+    <div class="demo-card">
+      <p>Products Tracked</p>
+      <h3>1,847</h3>
+      <p style="color: #9c27b0; font-weight: 600;">Real-time analytics</p>
+    </div>
+  </div>
+  
+  <div class="demo-cta-center">
+    <a href="/demo" class="btn-main" style="font-size: 18px; padding: 16px 40px;">
+      Try Interactive Demo →
+    </a>
+  </div>
+</section>
+
 <section class="section" id="features">
   <h2>Powerful Retail Visibility</h2>
 
   <div class="features-grid">
     <div class="feature-card">
+      <div class="feature-icon">
+        <canvas id="heatmapChart"></canvas>
+      </div>
       <h3>🔥 Live Traffic Heatmaps</h3>
       <p>See the busiest hours, branches & checkout systems in real-time with visual heat mapping.</p>
     </div>
 
     <div class="feature-card">
+      <div class="feature-icon">
+        <canvas id="categoryChart"></canvas>
+      </div>
       <h3>📊 Product Insights</h3>
       <p>Top-selling items, buying trends & revenue drivers at a glance with detailed analytics.</p>
     </div>
 
     <div class="feature-card">
+      <div class="feature-icon">
+        <canvas id="trendChart"></canvas>
+      </div>
       <h3>🤖 Predictive AI</h3>
       <p>Forecast demand, staffing needs & stocking requirements using advanced machine learning.</p>
     </div>
@@ -691,6 +846,119 @@ footer {
 <footer>
   <p>Copyright &copy; <script>document.write(new Date().getFullYear())</script> Visible Analytics | All Rights Reserved</p>
 </footer>
+
+<script>
+// Chart 1: Hourly Heatmap
+const heatmapCtx = document.getElementById('heatmapChart').getContext('2d');
+new Chart(heatmapCtx, {
+  type: 'bar',
+  data: {
+    labels: ['9AM', '11AM', '1PM', '3PM', '5PM', '7PM'],
+    datasets: [{
+      label: 'Traffic',
+      data: [85, 165, 210, 185, 245, 155],
+      backgroundColor: [
+        'rgba(139, 0, 0, 0.4)',
+        'rgba(139, 0, 0, 0.5)',
+        'rgba(139, 0, 0, 0.7)',
+        'rgba(139, 0, 0, 0.6)',
+        'rgba(139, 0, 0, 0.9)',
+        'rgba(139, 0, 0, 0.5)'
+      ],
+      borderColor: '#8b0000',
+      borderWidth: 2,
+      borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: { color: '#666', font: { size: 10 } },
+        grid: { color: 'rgba(0, 0, 0, 0.05)' }
+      },
+      x: {
+        ticks: { color: '#666', font: { size: 10 } },
+        grid: { display: false }
+      }
+    }
+  }
+});
+
+// Chart 2: Category Distribution
+const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+new Chart(categoryCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['Electronics', 'Clothing', 'Home', 'Sports', 'Beauty'],
+    datasets: [{
+      data: [30, 25, 20, 15, 10],
+      backgroundColor: [
+        '#8b0000',
+        '#cc0000',
+        '#ff4444',
+        '#ff6666',
+        '#ff8888'
+      ],
+      borderWidth: 0
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'bottom',
+        labels: { color: '#666', font: { size: 10 }, padding: 8 }
+      }
+    }
+  }
+});
+
+// Chart 3: Weekly Trend
+const trendCtx = document.getElementById('trendChart').getContext('2d');
+new Chart(trendCtx, {
+  type: 'line',
+  data: {
+    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    datasets: [{
+      label: 'Transactions',
+      data: [420, 485, 445, 520, 640, 710, 580],
+      borderColor: '#8b0000',
+      backgroundColor: 'rgba(139, 0, 0, 0.1)',
+      tension: 0.4,
+      fill: true,
+      borderWidth: 3,
+      pointRadius: 4,
+      pointBackgroundColor: '#8b0000'
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: { color: '#666', font: { size: 10 } },
+        grid: { color: 'rgba(0, 0, 0, 0.05)' }
+      },
+      x: {
+        ticks: { color: '#666', font: { size: 10 } },
+        grid: { display: false }
+      }
+    }
+  }
+});
+</script>
 
 </body>
 </html>
